@@ -1,0 +1,83 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f7f4ef;
+  padding: 16px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 20px;
+}
+
+.add-form {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.add-form input,
+.add-form select,
+.add-form button {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 13px;
+}
+
+.add-form button {
+  background: #111;
+  color: white;
+}
+
+#summary {
+  text-align: center;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+/* 앨범 영역 */
+.album-section {
+  margin-bottom: 18px;
+}
+
+.album-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 포카 그리드 */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.card {
+  background: white;
+  border-radius: 6px;
+  padding: 4px;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.card.owned img {
+  opacity: 0.5;
+}
+
+.card-name {
+  font-size: 10px;
+  margin-top: 2px;
+}
