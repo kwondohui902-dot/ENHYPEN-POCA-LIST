@@ -2,32 +2,29 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>ENHYPEN POCA LIST</title>
+  <title>ENHYPEN 포카 리스트</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <h1>ENHYPEN POCA LIST</h1>
+<h1>ENHYPEN 포카 리스트</h1>
+<div id="summary">보유 0 / 전체 0</div>
 
-  <!-- 앨범 추가 -->
-  <section class="add-box">
-    <input id="newAlbum" placeholder="앨범 이름 입력" />
-    <button onclick="addAlbum()">앨범 추가</button>
-  </section>
+<div class="add-form">
+  <input id="albumInput" placeholder="새 앨범 이름" />
+  <button onclick="addAlbum()">앨범 추가</button>
+</div>
 
-  <!-- 포카 추가 -->
-  <section class="add-box">
-    <select id="albumSelect">
-      <option value="">앨범 선택</option>
-    </select>
-    <input id="cardName" placeholder="포카 이름 / 버전" />
-    <input id="cardImage" type="file" accept="image/*" />
-    <button onclick="addCard()">포카 추가</button>
-  </section>
+<div class="add-form">
+  <select id="albumSelect"></select>
+  <input id="cardName" placeholder="포카 이름 / 버전" />
+  <input id="cardImage" type="file" accept="image/*" />
+  <button onclick="addCard()">포카 추가</button>
+</div>
 
-  <!-- 앨범 & 포카 표시 영역 -->
-  <div id="albumContainer"></div>
+<div id="albums"></div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
