@@ -1,10 +1,18 @@
-const albums = {};
 const albumsDiv = document.getElementById("albums");
 const albumSelect = document.getElementById("albumSelect");
 const summary = document.getElementById("summary");
 
 document.getElementById("addAlbumBtn").onclick = addAlbum;
 document.getElementById("addCardBtn").onclick = addCard;
+
+let albums = JSON.parse(localStorage.getItem("albums")) || {};
+
+// 최초 렌더
+render();
+
+function save() {
+  localStorage.setItem("albums", JSON.stringify(albums));
+}
 
 function updateSummary() {
   let total = 0;
@@ -25,6 +33,7 @@ function addAlbum() {
 
   albums[name] = [];
   input.value = "";
+  save();
   render();
 }
 
@@ -41,6 +50,7 @@ function addCard() {
       image: reader.result,
       owned: false
     });
+    save();
     render();
   };
   reader.readAsDataURL(file);
@@ -54,7 +64,6 @@ function render() {
   albumSelect.innerHTML = "";
 
   Object.keys(albums).forEach(albumName => {
-    // select 옵션
     const opt = document.createElement("option");
     opt.value = albumName;
     opt.textContent = albumName;
@@ -73,17 +82,16 @@ function render() {
     let folded = false;
     let pressTimer;
 
-    // 터치 시작 (꾹 누르기)
     title.addEventListener("touchstart", () => {
       pressTimer = setTimeout(() => {
         if (confirm("앨범을 삭제할까요?")) {
           delete albums[albumName];
+          save();
           render();
         }
       }, 600);
     });
 
-    // 터치 끝 (짧게 탭)
     title.addEventListener("touchend", () => {
       clearTimeout(pressTimer);
       folded = !folded;
@@ -97,18 +105,18 @@ function render() {
       const img = document.createElement("img");
       img.src = card.image;
 
-      // 클릭 → 보유 토글
       img.onclick = () => {
         card.owned = !card.owned;
+        save();
         render();
       };
 
-      // 꾹 누르기 → 포카 삭제
       let cardTimer;
       img.addEventListener("touchstart", () => {
         cardTimer = setTimeout(() => {
           if (confirm("포카를 삭제할까요?")) {
             albums[albumName].splice(index, 1);
+            save();
             render();
           }
         }, 600);
