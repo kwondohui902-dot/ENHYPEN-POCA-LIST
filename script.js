@@ -1,89 +1,90 @@
-const albumSelect = document.getElementById("albumSelect");
-const albumContainer = document.getElementById("albumContainer");
+let albums = {};
 
-let albums = JSON.parse(localStorage.getItem("albums")) || {};
+// 앨범 추가
+function addAlbum() {
+  const albumName = document.getElementById("newAlbum").value.trim();
+  if (!albumName || albums[albumName]) return;
 
-function saveAlbums() {
-  localStorage.setItem("albums", JSON.stringify(albums));
+  albums[albumName] = [];
+  document.getElementById("newAlbum").value = "";
+  renderAlbums();
+  updateAlbumSelect();
 }
 
+// 앨범 선택창 업데이트
+function updateAlbumSelect() {
+  const select = document.getElementById("albumSelect");
+  select.innerHTML = `<option value="">앨범 선택</option>`;
+  Object.keys(albums).forEach(album => {
+    const option = document.createElement("option");
+    option.value = album;
+    option.textContent = album;
+    select.appendChild(option);
+  });
+}
+
+// 포카 추가
+function addCard() {
+  const album = document.getElementById("albumSelect").value;
+  const name = document.getElementById("cardName").value.trim();
+  const file = document.getElementById("cardImage").files[0];
+
+  if (!album || !name || !file) return;
+
+  const reader = new FileReader();
+  reader.onload = function () {
+    albums[album].push({
+      name,
+      image: reader.result,
+      owned: false
+    });
+    renderAlbums();
+  };
+  reader.readAsDataURL(file);
+
+  document.getElementById("cardName").value = "";
+  document.getElementById("cardImage").value = "";
+}
+
+// 앨범 & 포카 렌더링
 function renderAlbums() {
-  albumContainer.innerHTML = "";
+  const container = document.getElementById("albumContainer");
+  container.innerHTML = "";
 
   Object.keys(albums).forEach(albumName => {
-    const section = document.createElement("div");
-    section.className = "album-section";
+    const albumDiv = document.createElement("div");
+    albumDiv.className = "album";
 
     const title = document.createElement("div");
     title.className = "album-title";
-    title.textContent = "▶ " + albumName;
+    title.textContent = albumName;
 
-    const cards = document.createElement("div");
-    cards.className = "card-container";
-    cards.style.display = "none";
+    const grid = document.createElement("div");
+    grid.className = "card-grid";
 
     title.onclick = () => {
-      const open = cards.style.display === "grid";
-      cards.style.display = open ? "none" : "grid";
-      title.textContent = (open ? "▶ " : "▼ ") + albumName;
+      grid.style.display = grid.style.display === "none" ? "grid" : "none";
     };
 
     albums[albumName].forEach(card => {
       const cardDiv = document.createElement("div");
-      cardDiv.className = "card";
+      cardDiv.className = "card" + (card.owned ? " owned" : "");
 
       const img = document.createElement("img");
-      img.src = card.img;
+      img.src = card.image;
+      img.title = card.name;
 
-      const name = document.createElement("div");
-      name.className = "card-name";
-      name.textContent = card.name;
+      img.onclick = () => {
+        card.owned = !card.owned;
+        cardDiv.classList.toggle("owned");
+      };
 
       cardDiv.appendChild(img);
-      cardDiv.appendChild(name);
-      cards.appendChild(cardDiv);
+      grid.appendChild(cardDiv);
     });
 
-    section.appendChild(title);
-    section.appendChild(cards);
-    albumContainer.appendChild(section);
-  });
-
-  albumSelect.innerHTML = "";
-  Object.keys(albums).forEach(a => {
-    const opt = document.createElement("option");
-    opt.value = a;
-    opt.textContent = a;
-    albumSelect.appendChild(opt);
+    albumDiv.appendChild(title);
+    albumDiv.appendChild(grid);
+    container.appendChild(albumDiv);
   });
 }
-
-function addAlbum() {
-  const name = document.getElementById("newAlbum").value.trim();
-  if (!name || albums[name]) return;
-  albums[name] = [];
-  saveAlbums();
-  renderAlbums();
-  document.getElementById("newAlbum").value = "";
-}
-
-function addCard() {
-  const name = document.getElementById("cardName").value.trim();
-  const imgInput = document.getElementById("cardImage");
-  const album = albumSelect.value;
-
-  if (!name || !imgInput.files[0]) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    albums[album].push({ name, img: reader.result });
-    saveAlbums();
-    renderAlbums();
-  };
-  reader.readAsDataURL(imgInput.files[0]);
-
-  document.getElementById("cardName").value = "";
-  imgInput.value = "";
-}
-
-renderAlbums();
