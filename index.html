@@ -2,41 +2,32 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>ENHYPEN 포카</title>
-  <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#000000">
-
-  <link rel="manifest" href="manifest.json" />
+  <title>ENHYPEN POCA LIST</title>
   <link rel="stylesheet" href="style.css" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#f7f4ef" />
 </head>
 <body>
 
-<h1>ENHYPEN POCA LIST</h1>
+  <h1>ENHYPEN POCA LIST</h1>
 
-<div class="add-form">
-  <input id="newAlbumInput" placeholder="새 앨범 이름" />
-  <button id="addAlbumBtn">앨범 추가</button>
-</div>
+  <!-- 앨범 추가 -->
+  <section class="add-box">
+    <input id="newAlbum" placeholder="앨범 이름 입력" />
+    <button onclick="addAlbum()">앨범 추가</button>
+  </section>
 
-<div class="add-form">
-  <input type="file" id="imageInput" accept="image/*" />
-  <input id="nameInput" placeholder="포카 이름" />
-  <select id="albumSelect"></select>
-  <button id="addBtn">포카 추가</button>
-</div>
+  <!-- 포카 추가 -->
+  <section class="add-box">
+    <select id="albumSelect">
+      <option value="">앨범 선택</option>
+    </select>
+    <input id="cardName" placeholder="포카 이름 / 버전" />
+    <input id="cardImage" type="file" accept="image/*" />
+    <button onclick="addCard()">포카 추가</button>
+  </section>
 
-<div id="summary"></div>
-<div id="albumContainer"></div>
+  <!-- 앨범 & 포카 표시 영역 -->
+  <div id="albumContainer"></div>
 
-<script src="script.js"></script>
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-  }
-</script>
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
